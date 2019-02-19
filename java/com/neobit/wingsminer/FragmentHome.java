@@ -11,10 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.neobit.wingsminer.helpers.ConnectionDetector;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONObject;
 
@@ -77,26 +78,13 @@ public class FragmentHome extends Fragment {
                     editor.commit();
                 }
             });
-
             handler.post(runnableCode);
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            /*if (!cd.isConnectingToInternet()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.no_conexion)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.no_conexion, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
 
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-                return rootView;
-            }
-
-            URL_general = getString(R.string.url_next);
-            jsonTask = new GetJSON(URL_general);
-            jsonTask.execute();*/
+            ImageView gif = (ImageView) rootView.findViewById(R.id.gif);
+            Glide.with(getActivity())
+                    .load(R.drawable.mininggif)
+                    .placeholder(R.drawable.logo_fondo)
+                    .into(gif);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,13 +99,16 @@ public class FragmentHome extends Fragment {
                     int blocks = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
                     int periodicity = 3600 * 24 / blocks;
                     int total = settings.getInt("total", 0);
+
+                    //TextView textRaised = (TextView) rootView.findViewById(R.id.textRaised);
+                    //textRaised.setText(String.valueOf(total));
                     int[] time = splitToComponentTimes(total * periodicity);
                     TextView textTodayTime = (TextView) rootView.findViewById(R.id.textTodayTime);
                     textTodayTime.setText(time[0] + "h" + (time[1] <= 9 ? "0" : "") + time[1] + "m");// + (time[2] <= 9 ? "0" : "") + time[2]);
 
                     TextView textTodayEth = (TextView) rootView.findViewById(R.id.textTodayEth);
                     textTodayEth.setText(String.valueOf(new DecimalFormat("#.#######").format(round(Float.parseFloat(usuario.getString("daily")) / blocks * total, 6))) + " ETH");
-                    handler.postDelayed(this, periodicity);
+                    handler.postDelayed(this, periodicity * 1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

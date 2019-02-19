@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neobit.wingsminer.adapters.PlansAdapter;
 import com.neobit.wingsminer.helpers.JSONParser;
@@ -38,7 +39,7 @@ public class FragmentPlans extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
+        rootView = inflater.inflate(R.layout.fragment_recycler2, container, false);
         mProgressView = rootView.findViewById(R.id.progressView);
         mContentView = rootView.findViewById(R.id.contentView);
 
@@ -47,6 +48,7 @@ public class FragmentPlans extends Fragment {
         textSuperior.setVisibility(View.VISIBLE);
         textSuperior.setText(getActivity().getText(R.string.fragment_recycler_label_plans_title));
         if (!NetworkUtils.isConnected(getActivity())) {
+            Toast.makeText(getActivity(), R.string.no_conexion, Toast.LENGTH_LONG).show();
             getActivity().onBackPressed();
             return rootView;
         }

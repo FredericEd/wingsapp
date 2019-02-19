@@ -6,15 +6,19 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.neobit.wingsminer.helpers.NetworkUtils;
 
 import org.json.JSONObject;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class FragmentProfile extends Fragment {
 
@@ -55,10 +59,15 @@ public class FragmentProfile extends Fragment {
             btnProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new FragmentUpdate();
-                    FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
-                    fragTransaction.replace(R.id.frame_container, fragment);
-                    fragTransaction.commit();
+                    if (!NetworkUtils.isConnected(getActivity())) {
+                        Toast.makeText(getActivity(), R.string.no_conexion, Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        Fragment fragment = new FragmentUpdate();
+                        FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+                        fragTransaction.replace(R.id.frame_container, fragment);
+                        fragTransaction.commit();
+                    }
                 }
             });
         } catch (Exception e) {

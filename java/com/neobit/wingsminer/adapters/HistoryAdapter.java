@@ -57,7 +57,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             int periodicity = 3600 * 24 / blocks;
             int total = Integer.valueOf(temp.getString("total"));
             int[] time = splitToComponentTimes(total * periodicity);
-            holder.textFecha.setText(fecha[0] + "/" + fecha[1] + "/" + fecha[2]);
+            holder.textFecha.setText(String.valueOf(position + 1));//fecha[0] + "/" + fecha[1] + "/" + fecha[2]);
             holder.textTime.setText(time[0] + "h" + (time[1] <= 9 ? "0" : "") + time[1] + "m");
             holder.textAmount.setText(String.valueOf(new DecimalFormat("#.#######").format(Double.parseDouble(temp.getString("daily_payment")))) + " ETH");
             holder.itemView.setTag(temp.toString());

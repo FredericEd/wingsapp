@@ -57,6 +57,14 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/activity_preview_label_instructions"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnNext"
                 android:layout_width="match_parent"

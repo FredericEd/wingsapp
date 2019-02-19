@@ -32,6 +32,25 @@ public class MiningWorker extends Worker {
     @Override
     public Result doWork() {
         try {
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Log.i("MINING", "Cheking internet connection.");
+                        SharedPreferences settings = getApplicationContext().getSharedPreferences("MisPreferencias", getApplicationContext().MODE_PRIVATE);
+                        JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
+                        int periodicity = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
+                        periodicity = 3600 * 24 / periodicity;
+                        OneTimeWorkRequest compressionWork =
+                                new OneTimeWorkRequest.Builder(MiningWorker.class)
+                                        .setInitialDelay(periodicity, TimeUnit.SECONDS)
+                                        .addTag(getApplicationContext().getString(R.string.channel_name))
+                                        .build();
+                        WorkManager.getInstance().enqueue(compressionWork);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             SharedPreferences settings = getApplicationContext().getSharedPreferences("MisPreferencias", getApplicationContext().MODE_PRIVATE);
             if (settings.getInt("3g", 0) == 0 && NetworkUtils.isWifiConnected(getApplicationContext()) ||
                     settings.getInt("3g", 0) == 1 && NetworkUtils.isConnected(getApplicationContext())) {
@@ -41,24 +60,6 @@ public class MiningWorker extends Worker {
                 mMiningTask = new MiningTask(URL, settings.getInt("total", 0) + 1, api_key);
                 mMiningTask.execute();
             }
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        SharedPreferences settings = getApplicationContext().getSharedPreferences("MisPreferencias", getApplicationContext().MODE_PRIVATE);
-                        JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
-                        int periodicity = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
-                        periodicity = 3600 * 24 / periodicity;
-                        OneTimeWorkRequest compressionWork =
-                                new OneTimeWorkRequest.Builder(MiningWorker.class)
-                                        .setInitialDelay(periodicity, TimeUnit.SECONDS)
-                                        .addTag("mining")
-                                        .build();
-                        WorkManager.getInstance().enqueue(compressionWork);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +67,6 @@ public class MiningWorker extends Worker {
         // (Returning Result.retry() tells WorkManager to try this task again
         // later; Result.failure() says not to try again.)
     }
-
 
     public class MiningTask extends AsyncTask<Void, Void, JSONObject> {
 

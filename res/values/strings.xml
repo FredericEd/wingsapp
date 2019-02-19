@@ -1,32 +1,36 @@
 <resources>
-    <string name="app_name">Wings Miner</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="error_tag">ERROR</string>
-    <string name="ok">OK</string>
+    <string name="app_name" translatable="false">Wings Miner</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="error_tag" translatable="false">ERROR</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="channel_name" translatable="false">mining</string>
+    <string name="channel_description" translatable="false">WingsMiner\'s default notification channel</string>
+    <string name="persistent_notification">Wings Miner is currently up and running.</string>
     <string name="logoff">Log off</string>
     <string name="afirmacion">Yes</string>
     <string name="negacion">No</string>
-    <string name="no_conexion">You are not connected to the internet. Check you connection.</string>
-    <string name="salir_prompt">¿Do you want to close the app?</string>
+    <string name="no_conexion">You need an active internet connection to access this funcionality.</string>
+    <string name="salir_prompt">Do you want to close the app?</string>
     <string name="save">Save</string>
     <string name="aceptar">Accept</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home" translatable="false">Home</string>
     <string name="menu_profile">Profile</string>
-    <string name="menu_upgrade">Upgrade</string>
+    <string name="menu_upgrade" translatable="false">Upgrade</string>
     <string name="menu_plans">Plans</string>
     <string name="menu_history">History</string>
-    <string name="menu_plan">Plan</string>
-    <string name="menu_mhs">MHs</string>
+    <string name="menu_plan" translatable="false">Plan</string>
+    <string name="menu_mhs" translatable="false">MHs</string>
 
     <!-- PREVIEW-->
     <string name="activity_preview_label_welcome">WELCOME</string>
+    <string name="activity_preview_label_instructions">Wings Mobile offers you the opportunity to mine Ethereum while doing your daily activities. Click the bottom and follow the steps to start your own mining business.</string>
 
     <!-- HOME-->
     <string name="fragment_home_label_raised">Raised:</string>
@@ -39,7 +43,7 @@
     <string name="fragment_home_label_email">Email:</string>
     <string name="fragment_home_label_address">Address:</string>
     <string name="fragment_home_label_city">City:</string>
-    <string name="fragment_home_label_state">State:</string>
+    <string name="fragment_home_label_state">State/Province:</string>
     <string name="fragment_home_label_country">Country:</string>
     <string name="fragment_home_button_update">Update profile</string>
     <string name="fragment_home_label_today_time">Today\'s mined time:</string>
@@ -76,9 +80,9 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is empty or too small</string>
 
-    <string name="url_countries">http://35.231.168.94/api/v1/countries</string>
-    <string name="url_states">http://35.231.168.94/api/v1/states</string>
-    <string name="url_phones">http://35.231.168.94/api/v1/phones</string>
-    <string name="url_blocks">http://35.231.168.94/api/v1/blocks</string>
-    <string name="url_plans">http://35.231.168.94/api/v1/plans</string>
+    <string name="url_countries" translatable="false">http://35.231.168.94/api/v1/countries</string>
+    <string name="url_states" translatable="false">http://35.231.168.94/api/v1/states</string>
+    <string name="url_phones" translatable="false">http://35.231.168.94/api/v1/phones</string>
+    <string name="url_blocks" translatable="false">http://35.231.168.94/api/v1/blocks</string>
+    <string name="url_plans" translatable="false">http://35.231.168.94/api/v1/plans</string>
 </resources>

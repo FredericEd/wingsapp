@@ -6,12 +6,13 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.json.JSONObject;
+
+import androidx.fragment.app.Fragment;
 
 public class FragmentUpgrade extends Fragment {
 
@@ -31,25 +32,6 @@ public class FragmentUpgrade extends Fragment {
         try {
             SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
             JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
-
-            /*ConnectionDetector cd = new ConnectionDetector(getActivity());
-            if (!cd.isConnectingToInternet()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.no_conexion)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.no_conexion, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-                return rootView;
-            }
-
-            URL_general = getString(R.string.url_next);
-            jsonTask = new GetJSON(URL_general);
-            jsonTask.execute();*/
         } catch (Exception e) {
             e.printStackTrace();
         }

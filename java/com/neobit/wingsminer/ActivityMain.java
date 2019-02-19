@@ -1,21 +1,26 @@
 package com.neobit.wingsminer;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.neobit.wingsminer.helpers.MiningWorker;
+import com.neobit.wingsminer.helpers.MiningService;
+import com.neobit.wingsminer.helpers.NetworkUtils;
 
 import org.json.JSONObject;
-
-import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +29,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Intent mServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +43,17 @@ public class ActivityMain extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(getString(R.string.channel_name), name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,8 +66,6 @@ public class ActivityMain extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         try {
-            WorkManager.getInstance().cancelAllWorkByTag("mining");
-
             SharedPreferences settings = getSharedPreferences("MisPreferencias", MODE_PRIVATE);
             JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
             TextView textName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textName);
@@ -68,17 +75,48 @@ public class ActivityMain extends AppCompatActivity
             TextView textVelocidad = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textVelocidad);
             textVelocidad.setText(usuario.getJSONObject("plan").getString("megahash"));
 
-            int periodicity = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
+            MiningService mSensorService = new MiningService(this);
+            mServiceIntent = new Intent(this, mSensorService.getClass());
+            if (!isMyServiceRunning(mSensorService.getClass())) {
+                WorkManager.getInstance().cancelAllWorkByTag("mining");
+                startService(mServiceIntent);
+            }
+            /*int periodicity = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
             periodicity = 3600 * 24 / periodicity;
             OneTimeWorkRequest compressionWork =
                     new OneTimeWorkRequest.Builder(MiningWorker.class)
                             .setInitialDelay(periodicity, TimeUnit.SECONDS)
-                            .addTag("mining")
+                            .addTag(getString(R.string.channel_name))
                             .build();
-            WorkManager.getInstance().enqueue(compressionWork);
+            WorkManager.getInstance().enqueue(compressionWork);*/
+            /*NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_name))
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentText(getString(R.string.persistent_notification))
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            Notification note = mBuilder.build();
+            note.flags |= Notification.FLAG_ONGOING_EVENT;
+            notificationManager.notify(324, note);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    protected void onDestroy() {
+        WorkManager.getInstance().cancelAllWorkByTag("mining");
+        stopService(mServiceIntent);
+        super.onDestroy();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -114,9 +152,9 @@ public class ActivityMain extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
             displayView(1);
         } else if (id == R.id.nav_upgrade) {
-            displayView(2);
-        } else if (id == R.id.nav_plans) {
             displayView(3);
+        /*} else if (id == R.id.nav_plans) {
+            displayView(3);*/
         } else if (id == R.id.nav_history) {
             displayView(4);
         }
@@ -125,9 +163,6 @@ public class ActivityMain extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Diplaying fragment view for selected nav drawer list item
-     */
     private void displayView(int position) {
         Fragment fragment = null;
         Bundle bundl = new Bundle();
@@ -145,11 +180,15 @@ public class ActivityMain extends AppCompatActivity
                 invalidateOptionsMenu();
                 break;
             case 3:
-                fragment = new FragmentPlans();
+                if (!NetworkUtils.isConnected(ActivityMain.this)) {
+                    Toast.makeText(ActivityMain.this, R.string.no_conexion, Toast.LENGTH_LONG).show();
+                } else fragment = new FragmentPlans();
                 invalidateOptionsMenu();
                 break;
             case 4:
-                fragment = new FragmentHistory();
+                if (!NetworkUtils.isConnected(ActivityMain.this)) {
+                    Toast.makeText(ActivityMain.this, R.string.no_conexion, Toast.LENGTH_LONG).show();
+                } else fragment = new FragmentHistory();
                 invalidateOptionsMenu();
                 break;
             default:
@@ -166,7 +205,7 @@ public class ActivityMain extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+                drawer.closeDrawer(GravityCompat.START);
         } else {
             Fragment anonymousFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
             if (anonymousFragment instanceof FragmentHome) {
@@ -175,7 +214,8 @@ public class ActivityMain extends AppCompatActivity
                         .setCancelable(false)
                         .setPositiveButton(R.string.afirmacion, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                android.os.Process.killProcess(android.os.Process.myPid());
+                                ActivityMain.this.finish();
+                                //android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton(R.string.negacion, new DialogInterface.OnClickListener() {

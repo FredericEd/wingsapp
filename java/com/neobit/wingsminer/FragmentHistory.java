@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neobit.wingsminer.adapters.HistoryAdapter;
 import com.neobit.wingsminer.helpers.JSONParser;
@@ -47,6 +48,7 @@ public class FragmentHistory extends Fragment {
         textSuperior.setVisibility(View.VISIBLE);
         textSuperior.setText(getActivity().getText(R.string.fragment_recycler_label_history_title));
         if (!NetworkUtils.isConnected(getActivity())) {
+            Toast.makeText(getActivity(), R.string.no_conexion, Toast.LENGTH_LONG).show();
             getActivity().onBackPressed();
             return rootView;
         }

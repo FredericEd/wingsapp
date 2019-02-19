@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.neobit.wingsminer.helpers.ConnectionDetector;
 import com.neobit.wingsminer.helpers.JSONParser;
+import com.neobit.wingsminer.helpers.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,10 +84,10 @@ public class FragmentUpdate extends Fragment {
             }
         });
         try {
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            if (!cd.isConnectingToInternet()) {
+            if (!NetworkUtils.isConnected(getActivity())) {
                 Toast.makeText(getActivity(), R.string.no_conexion, Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
+                return rootView;
             }
 
             SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
@@ -118,6 +118,10 @@ public class FragmentUpdate extends Fragment {
     private void attemptRegister() {
         try {
             if (mAuthTask != null) return;
+            if (!NetworkUtils.isConnected(getActivity())) {
+                Toast.makeText(getActivity(), R.string.no_conexion, Toast.LENGTH_LONG).show();
+                return;
+            }
 
             // Reset errors.
             mNameView.setError(null);

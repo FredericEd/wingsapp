@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel">Cancelar</string>
+    <string name="logoff">Cerrar sesión</string>
+    <string name="afirmacion">Sí</string>
+    <string name="negacion">No</string>
+    <string name="no_conexion">Necesita una conexión a internet activa para esta funcionalidad.</string>
+    <string name="salir_prompt">¿Desea cerrar la aplicación?</string>
+    <string name="save">Guardar</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_plans">Planes</string>
+    <string name="menu_history">Historial</string>
+    <string name="activity_preview_label_welcome">BIENVENIDO</string>
+    <string name="fragment_home_label_raised">Recaudado:</string>
+    <string name="fragment_home_label_plan">Tipo de plan:</string>
+    <string name="fragment_home_label_potency">Potencia activa:</string>
+    <string name="fragment_home_label_daily">Target diario:</string>
+    <string name="fragment_home_label_3g">Minar con 3G/4G:</string>
+    <string name="fragment_home_label_activated">Activado</string>
+    <string name="fragment_home_label_deactivated">Desactivado</string>
+    <string name="fragment_home_label_email">Correo:</string>
+    <string name="fragment_home_label_address">Dirección:</string>
+    <string name="fragment_home_label_city">Ciudad:</string>
+    <string name="fragment_home_label_state">Estado/Provincia:</string>
+    <string name="fragment_home_label_country">País:</string>
+    <string name="fragment_home_button_update">Actualizar perfil</string>
+    <string name="fragment_home_label_today_time">Tiempo minado hoy:</string>
+    <string name="fragment_home_label_today_eth">ETH minado hoy:</string>
+    <string name="activity_updgrade_label_title">MEJORA EL PLAN DE MINADO</string>
+    <string name="activity_updgrade_label_soon">¡Muy pronto!</string>
+    <string name="fragment_recycler_label_plans_title">Planes</string>
+    <string name="fragment_recycler_label_history_title">Historial</string>
+    <string name="fragment_recycler_label_fecha">DÍA</string>
+    <string name="fragment_recycler_label_amount">ETH MINADO</string>
+    <string name="fragment_recycler_label_time">TIEMPO MINADO</string>
+    <string name="title_activity_login">Registre su dispositivo</string>
+    <string name="prompt_email">Correo</string>
+    <string name="prompt_name">Nombres</string>
+    <string name="prompt_lastname">Apellidos</string>
+    <string name="prompt_country">País</string>
+    <string name="prompt_state">Estado/Provincia</string>
+    <string name="prompt_city">Ciudad</string>
+    <string name="prompt_address">Dirección</string>
+    <string name="prompt_wallet">TH Wallet</string>
+    <string name="prompt_country2">Seleccione su país:</string>
+    <string name="prompt_state2">Seleccione su estado o provincia:</string>
+    <string name="prompt_city2">Seleccione su ciudad:</string>
+    <string name="activity_preview_label_instructions" translatable="false">Wings Mobile te ofrece la posibilidad de minar ethereum mientras realizas tus actividades diarias. Haz click en el botón y sigue los pasos para que empieces tu propio negocio de minería.</string>
+    <string name="action_sign_in_short">Inicie sesión</string>
+    <string name="action_sign_in">Inicie sesión o regístrese</string>
+    <string name="error_invalid_email">El correo no es válido.</string>
+    <string name="error_invalid_password">La clave es muy corta.</string>
+    <string name="error_incorrect_password">La clave es incorrecta.</string>
+    <string name="error_field_required">El campo está vacío o es muy corto.</string>
+    <string name="persistent_notification">Wings Miner se encuentra activo y funcionando correctamente.</string>
+</resources>

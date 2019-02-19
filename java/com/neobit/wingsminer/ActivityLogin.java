@@ -11,11 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,8 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.neobit.wingsminer.helpers.ConnectionDetector;
+import com.google.android.material.snackbar.Snackbar;
 import com.neobit.wingsminer.helpers.JSONParser;
+import com.neobit.wingsminer.helpers.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -90,19 +88,12 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        ConnectionDetector cd = new ConnectionDetector(ActivityLogin.this);
-        if (!cd.isConnectingToInternet()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityLogin.this);
-            builder.setMessage(R.string.no_conexion)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return;
+        if (!NetworkUtils.isConnected(ActivityLogin.this)) {
+            Toast.makeText(ActivityLogin.this, R.string.no_conexion, Toast.LENGTH_LONG).show();
+            ActivityLogin.this.finish();
+            Intent mainIntent = new Intent(ActivityLogin.this, ActivityPreview.class);
+            ActivityLogin.this.startActivity(mainIntent);
+            return ;
         }
         countriesTask = new GetCountriesJSON(URL);
         countriesTask.execute();
@@ -111,6 +102,10 @@ public class ActivityLogin extends AppCompatActivity {
     private void attemptRegister() {
         try {
             if (mAuthTask != null) return;
+            if (!NetworkUtils.isConnected(ActivityLogin.this)) {
+                Toast.makeText(ActivityLogin.this, R.string.no_conexion, Toast.LENGTH_LONG).show();
+                return ;
+            }
 
             // Reset errors.
             mNameView.setError(null);
