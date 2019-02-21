@@ -57,7 +57,7 @@ public class MiningWorker extends Worker {
                 JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
                 String api_key = usuario.getString("api_key");
                 URL = getApplicationContext().getString(R.string.url_blocks);
-                mMiningTask = new MiningTask(URL, settings.getInt("total", 0) + 1, api_key);
+                mMiningTask = new MiningTask(URL, settings.getInt("total", 0) + 1, NetworkUtils.isWifiConnected(getApplicationContext()) ? "W" : "D", api_key);
                 mMiningTask.execute();
             }
         } catch (Exception e) {
@@ -72,11 +72,13 @@ public class MiningWorker extends Worker {
 
         private final String mURL;
         private final int mTotal;
+        private final String mTipo;
         private final String mMApiKey;
 
-        MiningTask(String URL, int total, String api_key) {
+        MiningTask(String URL, int total, String tipo, String api_key) {
             mURL = URL;
             mTotal = total;
+            mTipo = tipo;
             mMApiKey = api_key;
         }
 
@@ -86,6 +88,7 @@ public class MiningWorker extends Worker {
             try {
                 HashMap<String, String> meMap = new HashMap<String, String>();
                 meMap.put("total", String.valueOf(mTotal));
+                meMap.put("tipo", mTipo);
                 JSONParser jParser = new JSONParser();
                 jsonOb = jParser.getJSONPOSTAuthFromUrl(mURL, meMap, mMApiKey);
             } catch(Exception e) {
@@ -106,11 +109,11 @@ public class MiningWorker extends Worker {
                         break;
                     case "201":
                         editor.putInt("total", 0);
-                        editor.putString("total_final", response.getString("total_eth"));
+                        editor.putString("total_eth", response.getString("total_eth"));
+                        Log.i("TOTAL MINED", response.getString("total_eth"));
                         break;
                 }
                 editor.commit();
-                Log.i("response", response.getString("message"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

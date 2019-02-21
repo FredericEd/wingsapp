@@ -19,6 +19,7 @@
     <string name="salir_prompt">Do you want to close the app?</string>
     <string name="save">Save</string>
     <string name="aceptar">Accept</string>
+    <string name="empty">There is no data to show at the moment.</string>
 
     <string name="menu_home" translatable="false">Home</string>
     <string name="menu_profile">Profile</string>

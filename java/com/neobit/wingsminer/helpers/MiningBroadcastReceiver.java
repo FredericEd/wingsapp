@@ -16,7 +16,12 @@ public class MiningBroadcastReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent)
     {
         Log.i("started", "Mining broadcast received a call.");
+        /*PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "WingsMiner::KeepWorkRunning");
+        wakeLock.acquire();*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //startWakefulService(context, new Intent(context, MiningService.class));
             context.startForegroundService(new Intent(context, MiningService.class));
         } else {
             context.startService(new Intent(context, MiningService.class));

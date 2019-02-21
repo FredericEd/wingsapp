@@ -277,7 +277,7 @@ public class ActivityLogin extends AppCompatActivity {
             try {
                 if (success) {
                     Toast.makeText(ActivityLogin.this, response.getString("message"), Toast.LENGTH_LONG).show();
-                    SharedPreferences settings = getApplicationContext().getSharedPreferences("MisPreferencias", getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences settings = getApplicationContext().getSharedPreferences("MisPreferencias", getApplicationContext().MODE_MULTI_PROCESS);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("jsonUsuario", response.getJSONObject("data").toString());
                     editor.commit();

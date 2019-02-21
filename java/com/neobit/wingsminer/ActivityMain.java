@@ -81,23 +81,6 @@ public class ActivityMain extends AppCompatActivity
                 WorkManager.getInstance().cancelAllWorkByTag("mining");
                 startService(mServiceIntent);
             }
-            /*int periodicity = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
-            periodicity = 3600 * 24 / periodicity;
-            OneTimeWorkRequest compressionWork =
-                    new OneTimeWorkRequest.Builder(MiningWorker.class)
-                            .setInitialDelay(periodicity, TimeUnit.SECONDS)
-                            .addTag(getString(R.string.channel_name))
-                            .build();
-            WorkManager.getInstance().enqueue(compressionWork);*/
-            /*NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_name))
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentText(getString(R.string.persistent_notification))
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            Notification note = mBuilder.build();
-            note.flags |= Notification.FLAG_ONGOING_EVENT;
-            notificationManager.notify(324, note);*/
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -90,7 +90,7 @@ public class FragmentUpdate extends Fragment {
                 return rootView;
             }
 
-            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
             usuario = new JSONObject(settings.getString("jsonUsuario", ""));
             api_key = usuario.getString("api_key");
             mNameView.setText(usuario.getString("name"));
@@ -288,7 +288,7 @@ public class FragmentUpdate extends Fragment {
             try {
                 if (success) {
                     Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias",getActivity().MODE_PRIVATE);
+                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias",getActivity().MODE_MULTI_PROCESS);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("jsonUsuario", response.getJSONObject("data").toString());
                     editor.commit();

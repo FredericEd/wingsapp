@@ -54,4 +54,5 @@
     <string name="error_incorrect_password">La clave es incorrecta.</string>
     <string name="error_field_required">El campo está vacío o es muy corto.</string>
     <string name="persistent_notification">Wings Miner se encuentra activo y funcionando correctamente.</string>
+    <string name="empty">Por el momento no hay datos por mostrar.</string>
 </resources>

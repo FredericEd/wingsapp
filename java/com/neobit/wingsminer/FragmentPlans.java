@@ -53,7 +53,7 @@ public class FragmentPlans extends Fragment {
             return rootView;
         }
         try {
-            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
             JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
             api_key = usuario.getString("api_key");
 

@@ -53,7 +53,7 @@ public class FragmentHistory extends Fragment {
             return rootView;
         }
         try {
-            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
             JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
             api_key = usuario.getString("api_key");
 
@@ -106,6 +106,9 @@ public class FragmentHistory extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    TextView textEmpty = (TextView) rootView.findViewById(R.id.textEmpty);
+                    textEmpty.setVisibility(View.VISIBLE);
                 }
             }
         }

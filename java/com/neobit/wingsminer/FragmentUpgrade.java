@@ -30,7 +30,7 @@ public class FragmentUpgrade extends Fragment {
         mContentView = rootView.findViewById(R.id.contentView);
 
         try {
-            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
             JSONObject usuario = new JSONObject(settings.getString("jsonUsuario", ""));
         } catch (Exception e) {
             e.printStackTrace();

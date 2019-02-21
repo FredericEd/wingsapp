@@ -42,14 +42,14 @@ public class FragmentHome extends Fragment {
         mContentView = rootView.findViewById(R.id.contentView);
 
         try {
-            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+            SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
             usuario = new JSONObject(settings.getString("jsonUsuario", ""));
             TextView textName = (TextView) rootView.findViewById(R.id.textName);
             textName.setText(usuario.getString("name"));
             TextView textSurname = (TextView) rootView.findViewById(R.id.textSurname);
             textSurname.setText(usuario.getString("last_name"));
             TextView textRaised = (TextView) rootView.findViewById(R.id.textRaised);
-            textRaised.setText(settings.getString("total_final", "0") + " ETH");
+            textRaised.setText(String.valueOf(new DecimalFormat("#.#######").format(round(Float.parseFloat(settings.getString("total_eth", "0")), 6))) + " ETH");
 
             TextView textCountry = (TextView) rootView.findViewById(R.id.textCountry);
             textCountry.setText(usuario.getString("city"));
@@ -72,7 +72,7 @@ public class FragmentHome extends Fragment {
             switch3g.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt("3g", isChecked ? 1 : 0);
                     editor.commit();
@@ -95,7 +95,7 @@ public class FragmentHome extends Fragment {
         public void run() {
             try {
                 if (isAdded()) {
-                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_PRIVATE);
+                    SharedPreferences settings = getActivity().getSharedPreferences("MisPreferencias", getActivity().MODE_MULTI_PROCESS);
                     int blocks = Integer.parseInt(usuario.getJSONObject("plan").getString("blocks"));
                     int periodicity = 3600 * 24 / blocks;
                     int total = settings.getInt("total", 0);
